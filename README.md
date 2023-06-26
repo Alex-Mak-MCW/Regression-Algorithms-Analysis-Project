@@ -40,9 +40,10 @@ the relationship between ɑ and C where 𝐶 = 1/a
 
 ## 5. Files in This Project
 * Project Report (this file)
-* Codebase to show the numerical output (code.py)
+* Codebase to show the numerical output (Code.py)
 * Dataset to be used for the codebase (data.csv)
-* 4 pictures in jpg format to show the confusion matrices for different linear and logistic regression models, they are suppletmental and they are used for building a better understanding of this project's focuses
+* 5 pictures in jpg format to show the confusion matrices for different linear and logistic regression models, they are supplemental and they are used for building a better understanding of this project's focuses
+* Codebase to show both the numerical output (CodewithPlot.py)
 
 ## 6. Project Codebase
 
