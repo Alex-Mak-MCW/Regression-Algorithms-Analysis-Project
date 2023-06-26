@@ -5,17 +5,17 @@ import pandas as pd
 import numpy as np
 
 from sklearn.preprocessing import StandardScaler
-
 from sklearn.linear_model import LogisticRegression, LinearRegression, SGDClassifier, RidgeClassifier, Lasso, LassoCV, ElasticNet
-
 from sklearn.preprocessing import LabelEncoder
-
 from sklearn.metrics import confusion_matrix, classification_report, precision_score, accuracy_score, f1_score, recall_score, ConfusionMatrixDisplay
 from sklearn.model_selection import train_test_split, GridSearchCV
 
+# For confusion matrix and heatmap
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 # (OPTION) Load dataset direct from sklearn
 # from sklearn.datasets import load_breast_cancer
-
 
 # read the breast cancer dataset
 df = pd.read_csv('data.csv')
@@ -25,11 +25,9 @@ X=df.iloc[:,2:31].values
 # Y is a categorical variable that shows whether the tumor is benign (safe), or malicious (cancer)
 Y=df.iloc[:,1].values
 
-
 # Encode categorical data (Y here) to 0 and 1 using label encoder
 labelEncoder_Y=LabelEncoder()
 Y=labelEncoder_Y.fit_transform(Y)
-
 
 # 80(training)-10(valdiation)-10(test) split of the training and testing data
 
@@ -39,13 +37,11 @@ X_train, X_hold, Y_train, Y_hold = train_test_split(X, Y, test_size=0.2, random_
 # Split the hold into validation and test (10% each)
 X_valid, X_test, Y_valid, Y_test = train_test_split(X_hold, Y_hold, test_size=0.5, random_state=0)
 
-
 # Standardize the features using StandardScaler for all 3 models (training, valdiation, testing)
 sc=StandardScaler()
 X_train=sc.fit_transform(X_train)
 X_valid=sc.fit_transform(X_valid)
 X_test=sc.fit_transform(X_test)
-
 
 # ----------------------------------------------------------
 # Linear Regression PART (Baseline)
@@ -63,7 +59,6 @@ for i in range(len(linear_Y_valid_pred)):
     if linear_Y_valid_pred[i]>1.5:
         linear_Y_valid_pred[i]=1.45
 
-
 linear_Y_valid_pred=linear_Y_valid_pred.round()
 
 # Test the training model using the test dataset
@@ -79,6 +74,25 @@ print("\nFor Linear Regression (Baseline 1):")
 # print("Valdiation Accuracy: ",accuracy_score(linear_Y_valid_pred,Y_test))
 print("Test Accuracy: ",accuracy_score(linear_Y_test_pred,Y_test))
 
+# Confusion Matrix display (Linear Regression)
+linear_conf_matrix = confusion_matrix(Y_test, linear_Y_test_pred)
+
+fig, ax = plt.subplots(figsize=(8,6), dpi=100)
+sns.set(font_scale = 1.1)
+
+# Display Confusion Matrix through Heatmap
+ax = sns.heatmap(linear_conf_matrix, annot=True, fmt='d', )
+# set x-axis label and ticks. 
+ax.set_xlabel("Predicted Diagnosis", fontsize=14, labelpad=20)
+ax.xaxis.set_ticklabels(['Negative', 'Positive'])
+
+# set y-axis label and ticks
+ax.set_ylabel("Actual Diagnosis", fontsize=14, labelpad=20)
+ax.yaxis.set_ticklabels(['Negative', 'Positive'])
+
+ax.set_title("Confusion Matrix for the Linear Regression Model", fontsize=14, pad=20)
+# plt.show()
+plt.savefig("LinearRegressionCM.jpg")
 
 # ----------------------------------------------------------
 # LOGISTIC Regression PART
@@ -128,6 +142,25 @@ print("After hyperparameter tuning: ")
 # print("Valdiation Accuracy:",best_accuracy_log)
 print("Test Accuracy:",accuracy_score(logistic_Y_test_pred,Y_test))
 
+# Confusion Matrix display (Logistic Regression)
+logistic_conf_matrix = confusion_matrix(Y_test, logistic_Y_test_pred)
+
+fig, ax = plt.subplots(figsize=(8,6), dpi=100)
+sns.set(font_scale = 1.1)
+
+# Display Confusion Matrix through Heatmap
+ax = sns.heatmap(logistic_conf_matrix, annot=True, fmt='d', )
+# set x-axis label and ticks. 
+ax.set_xlabel("Predicted Diagnosis", fontsize=14, labelpad=20)
+ax.xaxis.set_ticklabels(['Negative', 'Positive'])
+
+# set y-axis label and ticks
+ax.set_ylabel("Actual Diagnosis", fontsize=14, labelpad=20)
+ax.yaxis.set_ticklabels(['Negative', 'Positive'])
+
+ax.set_title("Confusion Matrix for the Logistic Regression Model", fontsize=14, pad=20)
+# plt.show()
+plt.savefig("LogisticRegressionCM.jpg")
 
 # ----------------------------------------------------------
 # Lasso Regression PART
@@ -176,6 +209,25 @@ print("After hyperparameter tuning: ")
 # print("Valdiation Accuracy:",best_accuracy_log)
 print("Test Accuracy:",accuracy_score(lasso_Y_test_pred,Y_test))
 
+# Confusion Matrix display (Lasso Regression)
+lasso_conf_matrix = confusion_matrix(Y_test, lasso_Y_test_pred)
+
+fig, ax = plt.subplots(figsize=(8,6), dpi=100)
+sns.set(font_scale = 1.1)
+
+# Display Confusion Matrix through Heatmap
+ax = sns.heatmap(lasso_conf_matrix, annot=True, fmt='d', )
+# set x-axis label and ticks. 
+ax.set_xlabel("Predicted Diagnosis", fontsize=14, labelpad=20)
+ax.xaxis.set_ticklabels(['Negative', 'Positive'])
+
+# set y-axis label and ticks
+ax.set_ylabel("Actual Diagnosis", fontsize=14, labelpad=20)
+ax.yaxis.set_ticklabels(['Negative', 'Positive'])
+
+ax.set_title("Confusion Matrix for the Lasso Regression Model", fontsize=14, pad=20)
+# plt.show()
+plt.savefig("LassoRegressionCM.jpg")
 
 # ----------------------------------------------------------
 # Ridge Regression PART
@@ -225,6 +277,26 @@ print("After hyperparameter tuning: ")
 # print("Valdiation Accuracy:",best_accuracy_log)
 print("Test Accuracy:",accuracy_score(ridge_Y_test_pred,Y_test))
 
+# Confusion Matrix display (Ridge Regression)
+ridge_conf_matrix = confusion_matrix(Y_test, ridge_Y_test_pred)
+
+fig, ax = plt.subplots(figsize=(8,6), dpi=100)
+sns.set(font_scale = 1.1)
+
+# Display Confusion Matrix through Heatmap
+ax = sns.heatmap(ridge_conf_matrix, annot=True, fmt='d', )
+# set x-axis label and ticks. 
+ax.set_xlabel("Predicted Diagnosis", fontsize=14, labelpad=20)
+ax.xaxis.set_ticklabels(['Negative', 'Positive'])
+
+# set y-axis label and ticks
+ax.set_ylabel("Actual Diagnosis", fontsize=14, labelpad=20)
+ax.yaxis.set_ticklabels(['Negative', 'Positive'])
+
+ax.set_title("Confusion Matrix for the Ridge Regression Model", fontsize=14, pad=20)
+# plt.show()
+plt.savefig("RidgeRegressionCM.jpg")
+
 # ----------------------------------------------------------
 # Elastic Net Regression PART
 # Fit a ridge regression model using sklearn
@@ -272,3 +344,23 @@ net_Y_test_pred=tuned_net_model.predict(X_test)
 print("After hyperparameter tuning: ")
 # print("Valdiation Accuracy:",best_accuracy_log)
 print("Test Accuracy:",accuracy_score(net_Y_test_pred,Y_test))
+
+# Confusion Matrix display (Elastic Net Regression)
+net_conf_matrix = confusion_matrix(Y_test, net_Y_test_pred)
+
+fig, ax = plt.subplots(figsize=(8,6), dpi=100)
+sns.set(font_scale = 1.1)
+
+# Display Confusion Matrix through Heatmap
+ax = sns.heatmap(net_conf_matrix, annot=True, fmt='d', )
+# set x-axis label and ticks. 
+ax.set_xlabel("Predicted Diagnosis", fontsize=14, labelpad=20)
+ax.xaxis.set_ticklabels(['Negative', 'Positive'])
+
+# set y-axis label and ticks
+ax.set_ylabel("Actual Diagnosis", fontsize=14, labelpad=20)
+ax.yaxis.set_ticklabels(['Negative', 'Positive'])
+
+ax.set_title("Confusion Matrix for the Elastic Net Regression Model", fontsize=14, pad=20)
+# plt.show()
+plt.savefig("ElasticNetRegressionCM.jpg")
