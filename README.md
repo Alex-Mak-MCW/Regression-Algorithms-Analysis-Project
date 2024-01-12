@@ -1,4 +1,4 @@
-# CMPUT 466 (Machine Learning) Class Project
+# Regression Algorithms Analysis Project
 
 
 This is an undergraduate course-level research project completed by Alex Mak in CMPUT 466 (Machine Learning) at the University of Alberta. This project serves the aim to examine the training accuracies of various regression models when they are performing classification tasks. 
